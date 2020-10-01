@@ -4,7 +4,6 @@ import (
 	"crypto/ed25519"
 	"encoding/base64"
 	"fmt"
-	"log"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -34,13 +33,11 @@ type SigningMethodEd25519 struct{}
 func (SigningMethodEd25519) Verify(message, signature string, key interface{}) error {
 	publicKey, ok := key.(ed25519.PublicKey)
 	if !ok {
-		log.Println("public key type assertion failed")
 		return ErrorInvalidPublicKey
 	}
 
 	signatureBytes, err := DecodeString(signature)
 	if err != nil {
-		log.Println("unable to base64 decode signature")
 		return err
 	}
 
@@ -53,7 +50,6 @@ func (SigningMethodEd25519) Verify(message, signature string, key interface{}) e
 func (SigningMethodEd25519) Sign(message string, key interface{}) (string, error) {
 	privateKey, ok := key.(ed25519.PrivateKey)
 	if !ok {
-		log.Println("private key type assertion failed")
 		return "", ErrorInvalidPrivateKey
 	}
 
